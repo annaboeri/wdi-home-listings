@@ -16,24 +16,33 @@ class App extends Component {
   }
 
   handleHeadingClick(evt){
+    const field = evt.target.id
+    const { sortAscending, sortBy } = this.state
+    const newSortAscending = sortBy === field ? !sortAscending : true
     this.setState({
-      sortBy: evt.target.id,
-      sortAscending: !this.state.sortAscending,
+      sortBy: field,
+      sortAscending: newSortAscending
     })
   }
 
   sortedListings(){
-    const sortBy = this.state.sortBy
-    var arr = [ ...this.state.listings ]
-      return arr.sort(function(a, b){
-      if(a[sortBy] < b[sortBy]) return -1
-      if(a[sortBy] > b[sortBy]) return 1
-      return 0
-    })
+    const { listings, sortBy, sortAscending } = this.state
+    var arr = [ ...listings ]
+      return (
+        arr.sort((a, b) => {
+          if(a[sortBy] < b[sortBy] && sortAscending) return -1
+          if(a[sortBy] > b[sortBy] && !sortAscending) return -1
+          if(a[sortBy] > b[sortBy] && sortAscending) return 1
+          if(a[sortBy] < b[sortBy] && !sortAscending) return 1
+          return 0
+      })
+    )
   }
 
-// "&darr"
+// &darr &uarr
+
   render() {
+    console.log(this.state)
     return (
       <div className="App">
         <Container>
@@ -58,15 +67,6 @@ class App extends Component {
                         <td key={index}>{l[field]}</td>
                         )
                       })}
-                      {/* Same as:
-                      <td>{l._id}</td>
-                      <td>{l.address}</td>
-                      <td>{l.city}</td>
-                      <td>{l.homeType}</td>
-                      <td>{l.bedrooms}</td>
-                      <td>{l.bathrooms}</td>
-                      <td>{l.floorType}</td>
-                      <td>{l.rent}</td> */}
                     </tr>
                   )  
                 
