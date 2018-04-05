@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Table } from 'reactstrap'
+import { Container, Table } from 'reactstrap';
 import './App.css';
 
 // look at homeData.json to see how the data is structured
@@ -15,7 +15,28 @@ class App extends Component {
     sortAscending: true
   }
 
+  handleHeadingClick(evt){
+    console.log(evt.target.id)
+    this.setState({
+      sortBy: evt.target.id,
+      sortAscending: !this.state.sortAscending,
+    })
+  }
+
+  sortedListings(){
+    const sortBy = this.state.sortBy
+    var arr = [ ...this.state.listings ]
+      return arr.sort(function(a, b){
+      if(a[sortBy] < b[sortBy]) return -1
+      if(a[sortBy] > b[sortBy]) return 1
+      return 0
+    })
+  }
+
+// "&darr"
   render() {
+    const { listings } = this.state
+
     return (
       <div className="App">
         <Container>
@@ -24,39 +45,29 @@ class App extends Component {
             {/* table headers */}
             <thead>
               <tr>
-                <th>Heading 1 <span>&darr;</span></th>
-                <th>Heading 2 <span>&uarr;</span></th>
-                <th>Heading 3</th>
-                <th>Heading 4</th>
-                <th>Heading 5</th>
+               { this.state.headings.map((h) => {
+                  return <th onClick={this.handleHeadingClick.bind(this)} key={h.field} id={h.field}>{h.label}<span></span></th>
+               })}
               </tr>
             </thead>
-
             {/* table rows */}
             <tbody>
-              <tr>
-                <td>Lorem ipsum</td>
-                <td>2</td>
-                <td>Dolor sit amet</td>
-                <td>21</td>
-                <td>342</td>
-              </tr>
 
-              <tr>
-                <td>Lorem ipsum</td>
-                <td>2</td>
-                <td>Dolor sit amet</td>
-                <td>21</td>
-                <td>342</td>
-              </tr>
-
-              <tr>
-                <td>Lorem ipsum</td>
-                <td>2</td>
-                <td>Dolor sit amet</td>
-                <td>21</td>
-                <td>342</td>
-              </tr>
+            { this.sortedListings().map((l) => {
+                  return (
+                    <tr key={l._id}>
+                      <td>{l._id}</td>
+                      <td>{l.address}</td>
+                      <td>{l.city}</td>
+                      <td>{l.homeType}</td>
+                      <td>{l.bedrooms}</td>
+                      <td>{l.bathrooms}</td>
+                      <td>{l.floorType}</td>
+                      <td>{l.rent}</td>
+                    </tr>
+                  )  
+                
+               })}
             </tbody>
           </Table>
         </Container>
