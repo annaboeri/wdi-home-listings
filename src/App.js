@@ -42,7 +42,7 @@ class App extends Component {
 // &darr &uarr
 
   render() {
-    console.log(this.state)
+    console.log(this.state) 
     return (
       <div className="App">
         <Container>
@@ -52,7 +52,13 @@ class App extends Component {
             <thead>
               <tr>
                { this.state.headings.map((h, index) => {
-                  return <th onClick={this.handleHeadingClick.bind(this)} key={index} id={h.field}>{h.label}<span></span></th>
+                  return (
+                  <th onClick={this.handleHeadingClick.bind(this)} key={index} id={h.field}>{h.label}
+                    <span>
+                      
+                    </span>
+                  </th>
+                  )
                })}
               </tr>
             </thead>
