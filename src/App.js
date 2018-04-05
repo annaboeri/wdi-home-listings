@@ -16,7 +16,6 @@ class App extends Component {
   }
 
   handleHeadingClick(evt){
-    console.log(evt.target.id)
     this.setState({
       sortBy: evt.target.id,
       sortAscending: !this.state.sortAscending,
@@ -35,8 +34,6 @@ class App extends Component {
 
 // "&darr"
   render() {
-    const { listings } = this.state
-
     return (
       <div className="App">
         <Container>
@@ -45,8 +42,8 @@ class App extends Component {
             {/* table headers */}
             <thead>
               <tr>
-               { this.state.headings.map((h) => {
-                  return <th onClick={this.handleHeadingClick.bind(this)} key={h.field} id={h.field}>{h.label}<span></span></th>
+               { this.state.headings.map((h, index) => {
+                  return <th onClick={this.handleHeadingClick.bind(this)} key={index} id={h.field}>{h.label}<span></span></th>
                })}
               </tr>
             </thead>
@@ -56,6 +53,12 @@ class App extends Component {
             { this.sortedListings().map((l) => {
                   return (
                     <tr key={l._id}>
+                      {Object.keys(l).map((field, index) => {
+                        return (
+                        <td key={index}>{l[field]}</td>
+                        )
+                      })}
+                      {/* Same as:
                       <td>{l._id}</td>
                       <td>{l.address}</td>
                       <td>{l.city}</td>
@@ -63,7 +66,7 @@ class App extends Component {
                       <td>{l.bedrooms}</td>
                       <td>{l.bathrooms}</td>
                       <td>{l.floorType}</td>
-                      <td>{l.rent}</td>
+                      <td>{l.rent}</td> */}
                     </tr>
                   )  
                 
