@@ -42,7 +42,7 @@ class App extends Component {
 // &darr &uarr
 
   render() {
-    console.log(this.state) 
+    const { sortAscending, sortBy } = this.state
     return (
       <div className="App">
         <Container>
@@ -54,9 +54,12 @@ class App extends Component {
                { this.state.headings.map((h, index) => {
                   return (
                   <th onClick={this.handleHeadingClick.bind(this)} key={index} id={h.field}>{h.label}
-                    <span>
-                      
-                    </span>
+                      {sortAscending && h.field === sortBy
+                        ? (
+                          <span>{'\u2191'}</span>
+                        )
+                        : <span>{'\u2193'}</span>
+                      }
                   </th>
                   )
                })}
